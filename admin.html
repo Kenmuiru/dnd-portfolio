@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - DnD Couture</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            padding: 2rem;
+        }
+
+        .login-box {
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-field label {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-field input {
+            padding: 1rem;
+            background: var(--bg-color);
+            border: 1px solid var(--glass-border);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-field input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .login-btn {
+            padding: 1rem 2rem;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 0.75rem;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+
+        .back-link a:hover {
+            opacity: 0.8;
+        }
+
+        .security-note {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>Admin Login</h1>
+                <p>DnD Couture Dashboard</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div id="errorMessage" class="error-message">
+                    Invalid credentials. Please try again.
+                </div>
+
+                <div class="form-field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            <div class="back-link">
+                <a href="index.html">← Back to Portfolio</a>
+            </div>
+
+            <div class="security-note">
+                🔒 Default credentials: admin / admin123<br>
+                <small>Change password after first login</small>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = loginForm.querySelector('button[type="submit"]');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Disable button while processing
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+
+            try {
+                // Call backend API
+                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.LOGIN, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Login failed');
+                }
+
+                // Store token
+                setAuthToken(data.token);
+
+                // Show success message
+                loginBtn.textContent = '✅ Success!';
+
+                // Redirect to main page with admin access
+                setTimeout(() => {
+                    window.location.href = 'index.html?admin=true';
+                }, 500);
+
+            } catch (error) {
+                // Show error message
+                errorMessage.textContent = error.message || '❌ Login failed. Please try again.';
+                errorMessage.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+
+                // Reset button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Check if already logged in
+        window.addEventListener('load', async () => {
+            const token = getAuthToken();
+            if (token) {
+                try {
+                    // Verify token is still valid
+                    await apiCall(API_CONFIG.ENDPOINTS.VERIFY, { method: 'POST' });
+                    // Token is valid, redirect to admin
+                    window.location.href = 'index.html?admin=true';
+                } catch (error) {
+                    // Token invalid, clear it
+                    clearAuthToken();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
