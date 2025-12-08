@@ -1,9 +1,9 @@
 // API Configuration
 const API_CONFIG = {
-    // Change this to your production API URL when deploying
+    // Production API URL (Railway backend)
     BASE_URL: window.location.hostname === 'localhost'
         ? 'http://localhost:5000/api'
-        : 'https://your-api-url.railway.app/api', // Update with your Railway URL
+        : 'https://accomplished-beauty-production.up.railway.app/api',
 
     ENDPOINTS: {
         // Auth
