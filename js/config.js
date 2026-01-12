@@ -1,9 +1,12 @@
 // API Configuration
 const API_CONFIG = {
     // Production API URL (Railway backend)
-    BASE_URL: window.location.hostname === 'localhost'
+    // Dynamic API URL for Local/LAN/Production
+    BASE_URL: (window.location.hostname === 'localhost' || window.location.hostname === '')
         ? 'http://localhost:5000/api'
-        : 'https://accomplished-beauty-production.up.railway.app/api',
+        : (window.location.hostname.includes('railway.app')
+            ? 'https://accomplished-beauty-production.up.railway.app/api'
+            : `http://${window.location.hostname}:5000/api`),
 
     ENDPOINTS: {
         // Auth

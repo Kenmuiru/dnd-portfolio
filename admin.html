@@ -201,60 +201,62 @@
         const passwordInput = document.getElementById('password');
         const loginBtn = loginForm.querySelector('button[type="submit"]');
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value;
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
 
-            // Disable button while processing
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging in...';
+                // Disable button while processing
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Logging in...';
 
-            try {
-                // Call backend API
-                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.LOGIN, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
+                try {
+                    // Call backend API
+                    const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.LOGIN, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
 
-                const data = await response.json();
+                    const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Login failed');
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Login failed');
+                    }
+
+                    // Store token
+                    setAuthToken(data.token);
+
+                    // Show success message
+                    loginBtn.textContent = '✅ Success!';
+
+                    // Redirect to main page with admin access
+                    setTimeout(() => {
+                        window.location.href = 'index.html?admin=true';
+                    }, 500);
+
+                } catch (error) {
+                    // Show error message
+                    errorMessage.textContent = error.message || '❌ Login failed. Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+
+                    // Reset button
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+
+                    // Hide error after 3 seconds
+                    setTimeout(() => {
+                        errorMessage.classList.remove('show');
+                    }, 3000);
                 }
-
-                // Store token
-                setAuthToken(data.token);
-
-                // Show success message
-                loginBtn.textContent = '✅ Success!';
-
-                // Redirect to main page with admin access
-                setTimeout(() => {
-                    window.location.href = 'index.html?admin=true';
-                }, 500);
-
-            } catch (error) {
-                // Show error message
-                errorMessage.textContent = error.message || '❌ Login failed. Please try again.';
-                errorMessage.classList.add('show');
-                passwordInput.value = '';
-                passwordInput.focus();
-
-                // Reset button
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Login';
-
-                // Hide error after 3 seconds
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 3000);
-            }
-        });
+            });
+        }
 
         // Check if already logged in
         window.addEventListener('load', async () => {
