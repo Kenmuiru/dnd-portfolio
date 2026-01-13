@@ -18,8 +18,15 @@ app.use((req, res, next) => {
     next();
 });
 
-// Very permissive CORS for debugging
-app.use(cors());
+// Very permissive CORS for debugging + explicit support for local files (null origin)
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow if no origin (e.g. file://) or if origin is string 'null'
+        if (!origin || origin === 'null') return callback(null, true);
+        return callback(null, true);
+    },
+    credentials: true
+}));
 app.options('*', cors()); // Enable pre-flight for all routes
 
 app.use(express.json());

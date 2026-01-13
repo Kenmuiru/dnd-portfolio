@@ -1,12 +1,8 @@
 // API Configuration
 const API_CONFIG = {
     // Production API URL (Railway backend)
-    // Dynamic API URL: Local vs Production (Render)
-    BASE_URL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://localhost:5000/api' // Only use local server if explicitly on localhost
-        : (window.location.hostname.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)
-            ? `http://${window.location.hostname}:5000/api` // LAN IP
-            : 'https://dnd-portfolio.onrender.com/api'), // DEFAULT: Use Live Render (Handles file:// and Netlify)
+    // Live Render Backend (DEFAULT)
+    BASE_URL: 'https://dnd-portfolio.onrender.com/api',
 
     DEBUG: true,
 

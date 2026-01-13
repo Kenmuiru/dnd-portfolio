@@ -213,20 +213,11 @@
                 loginBtn.textContent = 'Logging in...';
 
                 try {
-                    // Call backend API
-                    const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.LOGIN, {
+                    // Call backend API using central apiCall helper
+                    const data = await apiCall(API_CONFIG.ENDPOINTS.LOGIN, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
                         body: JSON.stringify({ username, password })
                     });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Login failed');
-                    }
 
                     // Store token
                     setAuthToken(data.token);
