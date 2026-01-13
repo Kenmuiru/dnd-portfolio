@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+const multer = require('multer');
 
 const { connectToDatabase } = require('./config/database');
 const authRoutes = require('./routes/auth');
@@ -16,8 +16,15 @@ app.use((req, res, next) => {
     console.log(`[Request] ${req.method} ${req.url}`);
     next();
 });
+
+// Improved CORS to handle 'null' origin (common for file:// protocol)
 app.use(cors({
-    origin: true, // Allow all origins including LAN IPs
+    origin: function (origin, callback) {
+        if (!origin || origin === 'null') {
+            return callback(null, true);
+        }
+        callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
