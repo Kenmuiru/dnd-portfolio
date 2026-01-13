@@ -18,18 +18,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// Improved CORS to handle 'null' origin (common for file:// protocol)
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || origin === 'null') {
-            return callback(null, true);
-        }
-        callback(null, true);
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// Very permissive CORS for debugging
+app.use(cors());
+app.options('*', cors()); // Enable pre-flight for all routes
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
