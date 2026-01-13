@@ -6,7 +6,7 @@ let currentFilter = 'all';
 
 // DOM Elements & Initialization
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('App initialized');
+    console.log('🚀 D&D Portfolio: BACKEND MODE V2.0 ACTIVE');
 
     // Elements
     const portfolioGrid = document.getElementById('portfolio-grid');
